@@ -1,0 +1,205 @@
+﻿@page "/AddVendorForm/{Id:int}"
+@page "/AddVendorForm"
+@rendermode InteractiveAuto
+
+@using System.ComponentModel.DataAnnotations
+<style>
+    .valid.modified:not([type=checkbox]) {
+        outline: 1px solid #26b050;
+    }
+
+    .invalid {
+        outline: 1px solid red;
+    }
+
+    .validation-message {
+        color: red;
+    }
+</style>
+@if (LastSubmitResult != null)
+{
+    <h2>
+        Last submit status: @LastSubmitResult
+    </h2>
+}
+<p class="d-inline-flex gap-1">
+    <a class="btn btn-primary" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Add vendor</a>
+
+</p>
+<EditForm Model="@vendorForm" Enhance method="post" OnValidSubmit="@HandleValidSubmit" novalidate>
+    <ObjectGraphDataAnnotationsValidator />
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="collapse multi-collapse" id="multiCollapseExample1">
+
+
+        <div class="card card-body">
+
+            <div class="container-form">
+
+
+                <div class="container ">
+                    <div class="row">
+                        <div class="col">
+
+                            <label for="exampleFormControlInputText1" class="form-label">Name</label>
+                            <InputText class="form-control" @bind-Value="@vendorForm.Name" placeholder="" />
+                            <ValidationMessage For="@(() => @vendorForm.Name)" />
+
+                        </div>
+                        <div class="col">
+
+                            <label for="exampleFormControlInputText1" class="form-label">Number</label>
+                            <InputText class="form-control" @bind-Value="@vendorForm.Number" placeholder="" />
+                            <ValidationMessage For="@(() => @vendorForm.Number)" />
+
+                        </div>
+                        <div class="col">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInputText1" class="form-label">Payment</label>
+                                  
+            @*     @foreach (var dept in Departments)
+                {
+                    <option value="@dept.DepartmentId">@dept.DepartmentName</option>
+                } *@
+                                       <CustomInputSelect @bind-Value="@vendorForm.PaymentTermsId" class="form-control">
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+
+                                        </CustomInputSelect>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container ">
+                    <div class="row">
+                        <div class="mb-3">
+                            <label for="exampleFormControlInputText1" class="form-label">Address1</label>
+                            <InputText class="form-control" @bind-Value="@vendorForm.Address1" placeholder="" />
+                        </div>
+                    </div>
+                </div>
+                <div class="container ">
+                    <div class="row">
+                        <div class="mb-3">
+                            <label for="exampleFormControlInputText1" class="form-label">Address2</label>
+                            <InputText class="form-control" @bind-Value="@vendorForm.Address2" placeholder="" />
+                        </div>
+                    </div>
+                </div>
+                <div class="container ">
+                    <div class="row">
+                        <div class="mb-3">
+                            <label for="exampleFormControlInputText1" class="form-label">Address3</label>
+                            <InputText class="form-control" @bind-Value="@vendorForm.Address3" placeholder="" />
+                        </div>
+                    </div>
+                </div>
+                <div class="container ">
+                    <div class="row">
+                        <div class="mb-3">
+                            <label for="exampleFormControlInputText1" class="form-label">Address4</label>
+                            <InputText class="form-control" @bind-Value="@vendorForm.Address4" placeholder="" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container ">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInputText1" class="form-label">city</label>
+                                <InputText class="form-control" @bind-Value="@vendorForm.City" placeholder="ex lussiana" />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInputText1" class="form-label">State</label>
+                         <CustomInputSelect @bind-Value="vendorForm.State" class="form-control">
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+
+                                        </CustomInputSelect>
+                            </div>
+                        </div>
+                        <div class="col col-lg-4">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInputText1" class="form-label">zip</label>
+                                <InputText type="number" class="form-control" @bind-Value="@vendorForm.Zip" placeholder="ex 1234" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <Button Type="BlazorBootstrap.ButtonType.Button" Color="ButtonColor.Secondary" Class="float-end" @onclick="ResetForm">Reset</Button>
+                            <Button Type="BlazorBootstrap.ButtonType.Submit" Color="ButtonColor.Success" Class="float-end me-2">Submit</Button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+</EditForm>
+
+@code {
+    Enviri.SharedLibrary.Models.TblVendor vendorForm { get; set; } = new();
+    string LastSubmitResult;
+    [Parameter]
+    public int Id { get; set; }
+    private EditContext? editContext;
+    public PostResult result { get; set; } = new();
+    // public VendorFormModel vendorFormModel { get; set; } = new VendorFormModel();
+    [Inject] ToastService ToastService { get; set; } = default!;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id > 0)
+        {
+            vendorForm = await VendormasterService.GetVendorByIdAsync(Id);
+
+        }
+
+    }
+    void InvalidFormSubmitted(EditContext editContext)
+    {
+        LastSubmitResult = "OnInvalidSubmit was executed";
+    }
+    public async void HandleValidSubmit()
+    {
+
+        // var toastMessage = new ToastMessage
+        // (
+        //     type: ToastType.Success,
+        //     iconName: IconName.Check2All,
+        //     title: "Success!",
+        //     helpText: $"{DateTime.Now.ToLocalTime()}",
+        //     message: "Flight schedule created."
+        // );
+        // ToastService.Notify(toastMessage);
+
+        var data = await VendormasterService.AddVendorAsync(vendorForm);
+        var pdata = result.Message;
+        Console.WriteLine(vendorForm);
+
+    }
+
+    private void ResetForm()
+    {
+        vendorForm = new();
+        editContext = new EditContext(vendorForm);
+    }
+
+
+}

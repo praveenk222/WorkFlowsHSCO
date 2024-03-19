@@ -1,0 +1,17 @@
+﻿@page "/alertt"
+@inject IJSRuntime _JsRuntime
+
+<button type="button" class="btn btn-primary" @onclick="TestConfirmBox">Show toaster</button>
+
+<button class="btn btn-primary" @onclick="IncrementCount" >@ConfirmResult</button>
+@code {
+    private string ConfirmResult = "Click";
+    private async Task TestConfirmBox()
+    {
+        await _JsRuntime.InvokeVoidAsync("ShowToastr", "success", "testse");
+    }
+    private void IncrementCount()
+    {
+        ConfirmResult = "test";
+    }
+}

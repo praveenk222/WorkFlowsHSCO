@@ -1,0 +1,158 @@
+﻿<style>
+    .rz-grid-table thead th {
+        background-color: #81817D;
+    }
+
+        .rz-grid-table thead th .rz-column-title {
+            color: #ffffff;
+        }
+</style>
+<div class="row">
+    @if (departments.Count > 0)
+    {
+        
+        <RadzenStack Orientation="Orientation.Horizontal"  AlignItems="AlignItems.Center" Gap="10px" class="mt-2 mb-4">
+            <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="add_circle_outline" Text="Add New Vendor" Click="@InsertRow" style="margin-left:auto" />
+
+        </RadzenStack>
+        <RadzenDataGrid @ref="ordersGrid" AllowFiltering="true"  Data="@departments" TItem="TblVendor" AllowAdding="false"
+                        AllowPaging="true" PageSize="5"  >
+            <Columns>
+                <RadzenDataGridColumn TItem="TblVendor" Property="Id" Title=" ID" />
+                <RadzenDataGridColumn TItem="TblVendor" Property="Name" Title=" Name"></RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="TblVendor" Property="Address1" Title="Address1"></RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="TblVendor" Property="Address1" Title="Address2"></RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="TblVendor" Property="City" Title="City"></RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="TblVendor" Property="State" Title="State"></RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="TblVendor" Property="Zip" Title="Zip Code"></RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="TblVendor" Property="IsDeleted" Title="Status" />
+                <RadzenDataGridColumn TItem="TblVendor" Title="Action">
+                    <Template Context="departments">
+                        <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium"
+                                      Click="@(args => EditRow(departments))" @onclick:stopPropagation="true">
+                        </RadzenButton>
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1"
+                                      Click="@(args => DeleteRow(departments))" @onclick:stopPropagation="true">
+                        </RadzenButton>
+                    </Template>
+               
+                </RadzenDataGridColumn>
+            </Columns>
+
+        </RadzenDataGrid>
+       
+    }
+    else
+    {
+        <div class="alert alert-info">No Product Avilable </div>
+    }
+
+</div>
+@code {
+    private List<TblVendor> departments { get; set; } = new();
+    RadzenDataGrid<TblVendor> ordersGrid;
+    DataGridEditMode editMode = DataGridEditMode.Single;
+    List<TblVendor> ordersToInsert = new List<TblVendor>();
+    List<TblVendor> ordersToUpdate = new List<TblVendor>();
+    TblVendor dltdepartment = new TblVendor();
+    void Reset()
+    {
+        ordersToInsert.Clear();
+        ordersToUpdate.Clear();
+    }
+    public async Task LoadDepartment()
+    {
+        departments = await context.TblVendors.ToListAsync();
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadDepartment();
+    }
+    public void showtoaster()
+    {
+        //js.InvokeVoidAsync("ShowToastr", "success", "testse");
+    }
+
+   
+
+    void OnCreateRow(TblVendor order)
+    {
+        //save logic
+    }
+    async Task InsertRow()
+    {
+        NavigationManager.NavigateTo("/AddVendorForm");
+    }
+
+    async Task EditRow(TblVendor order)
+    {
+        if (editMode == DataGridEditMode.Single && ordersToInsert.Count() > 0)
+        {
+            Reset();
+        }
+
+        ordersToUpdate.Add(order);
+        await ordersGrid.EditRow(order);
+    }
+    public delegate string GetDepartmentName(object department);
+    public class UniqueEmailValidator : Radzen.Blazor.ValidatorBase
+    {
+        [Parameter]
+        public override string Text { get; set; } = "Email exists";
+
+        protected override bool Validate(IRadzenFormComponent component)
+        {
+            var email = component.GetValue();
+
+            return email != null && DepoName != null && !DepoName.Contains(email.ToString());
+        }
+
+        [Parameter]
+        public IEnumerable<string> DepoName { get; set; }
+    }
+
+    void CancelEdit(TblVendor order)
+    {
+        Reset(order);
+
+        ordersGrid.CancelEditRow(order);
+
+
+    }
+    void Reset(TblVendor order)
+    {
+        ordersToInsert.Remove(order);
+        ordersToUpdate.Remove(order);
+    }
+
+    async Task DeleteRow(TblVendor order)
+    {
+        Reset(order);
+        dltdepartment = order;
+
+    }
+    protected async Task ConfirmDelete_Click(bool deleteConfirmed)
+    {
+        if (deleteConfirmed)
+        {
+            // DeleteConfirmation.Show();
+            if (departments.Contains(dltdepartment))
+            {
+
+
+                await ordersGrid.Reload();
+            }
+            else
+            {
+                // ordersGrid.CancelEditRow(order);
+                await ordersGrid.Reload();
+            }
+
+        }
+    }
+
+    async Task ShowInlineDialog()
+    {
+
+    }
+}

@@ -1,0 +1,21 @@
+.form-group {
+    padding: 10px;
+}
+
+.table-striped {
+    background: whitesmoke;
+    border-radius: 24px;
+}
+
+.head-1 {
+    background-color: grey;
+}
+
+table {
+    width: 100%;
+}
+
+td {
+    width: 300px;
+    padding: 2%;
+}

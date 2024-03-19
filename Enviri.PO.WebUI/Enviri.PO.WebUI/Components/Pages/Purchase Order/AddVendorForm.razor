@@ -1,0 +1,131 @@
+﻿
+@using System.ComponentModel.DataAnnotations
+<style>
+    .valid.modified:not([type=checkbox]) {
+        outline: 1px solid #26b050;
+    }
+
+    .invalid {
+        outline: 1px solid red;
+    }
+
+    .validation-message {
+        color: red;
+    }
+</style>
+@if (LastSubmitResult != null)
+{
+    <h2>
+        Last submit status: @LastSubmitResult
+    </h2>
+}
+
+<EditForm Model="@vendorForm" Enhance method="post" FormName="vendorform" OnSubmit="@HandleValidSubmit" novalidate>
+
+    <div class="form-group row mb-3">
+        <label class="col-md-2 col-form-label">Name: <span class="text-danger">*</span></label>
+        <div class="col-md-10">
+            <InputText class="form-control" id="Name" @bind-Value="@vendorForm.Name" Placeholder="Name" />
+            @* <ValidationMessage For="@(() => @vendorForm.Name)" /> *@
+        </div>
+    </div>
+    <div class="form-group row mb-3">
+        <label class="col-md-2 col-form-label">Number: <span class="text-danger">*</span></label>
+        <div class="col-md-10">
+            <InputText class="form-control" @bind-Value="vendorForm.Number" Placeholder="Number" />
+            @* <ValidationMessage For="@(() => @vendorForm.Number)" /> *@
+        </div>
+    </div>
+    <div class="form-group row mb-3">
+        <label class="col-md-2 col-form-label">Address1: <span class="text-danger">*</span></label>
+        <div class="col-md-10">
+            <InputText  class="form-control" @bind-Value="@vendorForm.Address1" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label class="col-md-2 col-form-label">Address2 : <span class="text-danger">*</span></label>
+        <div class="col-md-10">
+            <InputText  @bind-Value="@vendorForm.Address2" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label class="col-md-2 col-form-label">Address3: <span class="text-danger">*</span></label>
+        <div class="col-md-10">
+            <InputText class="form-control" @bind-Value="@vendorForm.Address3" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label class="col-md-2 col-form-label">Address4: <span class="text-danger">*</span></label>
+        <div class="col-md-10">
+            <InputText  @bind-Value="vendorForm.Address4" />
+        </div>
+    </div>
+    <div class="form-group row mb-3">
+        <label class="col-md-2 col-form-label">City: <span class="text-danger">*</span></label>
+        <div class="col-md-10">
+            <InputText @bind-Value="@vendorForm.City" />
+        </div>
+    </div>
+    <div class="form-group row mb-3">
+        <label class="col-md-2 col-form-label">State: <span class="text-danger">*</span></label>
+        <div class="col-md-10">
+            <InputText @bind-Value="vendorForm.State" />
+        </div>
+    </div>
+    <div class="form-group row mb-3">
+        <label class="col-md-2 col-form-label">Zip: <span class="text-danger">*</span></label>
+        <div class="col-md-10">
+            <InputText @bind-Value="@vendorForm.Zip" />
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <Button Type="BlazorBootstrap.ButtonType.Button" Color="ButtonColor.Secondary" Class="float-end" @onclick="ResetForm">Reset</Button>
+            <Button Type="BlazorBootstrap.ButtonType.Submit" Color="ButtonColor.Success" Class="float-end me-2">Submit</Button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    TblVendor vendorForm { get; set; } = new();
+    string LastSubmitResult;
+    [Parameter]
+    public  int Id { get; set; }
+    private EditContext? editContext;
+    // public VendorFormModel vendorFormModel { get; set; } = new VendorFormModel();
+
+    protected  override async Task OnParametersSetAsync()
+    { if(Id > 0)
+        {
+            vendorForm = await context.TblVendors.FirstOrDefaultAsync(_=>_.Id==Id);
+
+        }
+
+    }
+    void InvalidFormSubmitted(EditContext editContext)
+    {
+        LastSubmitResult = "OnInvalidSubmit was executed";
+    }
+    public async void HandleValidSubmit()
+    {
+
+ 
+        Console.WriteLine(vendorForm);
+        var newDataAdded = context.PostResults.FromSqlRaw("usp_SaveDepartment {0},{1},{2},{3},{4},{5},{6}", vendorForm.Id, vendorForm.Name, vendorForm.IsDeleted, vendorForm.CreatedOn, vendorForm.CreatedBy, vendorForm.ModifiedBy, vendorForm.ModifiedOn);
+
+        //var data = await VendormasterService.AddVendorAsync(vendorForm);
+    }
+
+    private void ResetForm()
+    {
+        vendorForm = new();
+        editContext = new EditContext(vendorForm);
+    }
+
+   
+}

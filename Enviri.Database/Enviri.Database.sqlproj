@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>Enviri.Database</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{5c00f70c-56fa-4bed-a0dd-fc910b20011a}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>Enviri.Database</RootNamespace>
+    <AssemblyName>Enviri.Database</AssemblyName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="dbo\Views\" />
+    <Folder Include="Security\" />
+    <Folder Include="dbo\Stored Procedures\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\Approvals.sql" />
+    <Build Include="dbo\Tables\ApprovalStatus.sql" />
+    <Build Include="dbo\Tables\Attachments.sql" />
+    <Build Include="dbo\Tables\Comments.sql" />
+    <Build Include="dbo\Tables\CommunicationsLog.sql" />
+    <Build Include="dbo\Tables\ErrorLog.sql" />
+    <Build Include="dbo\Tables\Items.sql" />
+    <Build Include="dbo\Tables\PurchaseOrder.sql" />
+    <Build Include="dbo\Tables\RequestingDepartments.sql" />
+    <Build Include="dbo\Tables\Status.sql" />
+    <Build Include="dbo\Tables\VendorReason.sql" />
+    <Build Include="dbo\Tables\VendorSelection.sql" />
+    <Build Include="dbo\Tables\tbl_WorkFlows.sql" />
+    <Build Include="dbo\Tables\tbl_WorkFlowMembers.sql" />
+    <Build Include="dbo\Tables\tbl_Departments.sql" />
+    <Build Include="dbo\Tables\tbl_GeneralLedger.sql" />
+    <Build Include="dbo\Tables\tbl_Vendors.sql" />
+    <Build Include="dbo\Tables\tbl_PaymentTerms.sql" />
+    <Build Include="dbo\Tables\tbl_HRITMasterData.sql" />
+    <Build Include="dbo\Tables\tbl_UserGroupAccess.sql" />
+    <Build Include="dbo\Views\DepartmentsView.sql" />
+    <Build Include="dbo\Views\GeneralLedgerView.sql" />
+    <Build Include="dbo\Views\VendorsView.sql" />
+    <Build Include="dbo\Views\WorkFlowMembersView.sql" />
+    <Build Include="dbo\Views\WorkFlowsView.sql" />
+    <Build Include="Security\PurchaseOrders_User.sql" />
+    <Build Include="Security\PurchaseOrders_User_1.sql" />
+    <Build Include="Security\RoleMemberships.sql" />
+    <Build Include="dbo\Stored Procedures\PurchaseOrderSearch.sql" />
+    <Build Include="dbo\Stored Procedures\PurchaseOrderModify.sql" />
+    <Build Include="dbo\Stored Procedures\PurchaseOrderListAll.sql" />
+    <Build Include="dbo\Stored Procedures\PurchaseOrderInsert.sql" />
+    <Build Include="dbo\Stored Procedures\PurchaseOrderCreatedBy.sql" />
+    <Build Include="dbo\Stored Procedures\LastApprovalPurchaseOrders.sql" />
+    <Build Include="dbo\Stored Procedures\ItemsSingleById.sql" />
+    <Build Include="dbo\Stored Procedures\ItemsModify.sql" />
+    <Build Include="dbo\Stored Procedures\ItemsListByPurchaseOrderId.sql" />
+    <Build Include="dbo\Stored Procedures\ItemsListAll.sql" />
+    <Build Include="dbo\Stored Procedures\ItemsDelete.sql" />
+    <Build Include="dbo\Stored Procedures\GeneralLedgerViewSingleById.sql" />
+    <Build Include="dbo\Stored Procedures\GeneralLedgerViewListAll.sql" />
+    <Build Include="dbo\Stored Procedures\GeneralLedgerViewListActive.sql" />
+    <Build Include="dbo\Stored Procedures\ErrorLogSingleById.sql" />
+    <Build Include="dbo\Stored Procedures\ErrorLogModify.sql" />
+    <Build Include="dbo\Stored Procedures\ErrorLogListAll.sql" />
+    <Build Include="dbo\Stored Procedures\DepartmentsViewSingleById.sql" />
+    <Build Include="dbo\Stored Procedures\DepartmentsViewListAll.sql" />
+    <Build Include="dbo\Stored Procedures\DepartmentsViewListActive.sql" />
+    <Build Include="dbo\Stored Procedures\CommunicationsLogSingleById.sql" />
+    <Build Include="dbo\Stored Procedures\CommunicationsLogListAll.sql" />
+    <Build Include="dbo\Stored Procedures\CommunicationsLogInsert.sql" />
+    <Build Include="dbo\Stored Procedures\CommentsSingleById.sql" />
+    <Build Include="dbo\Stored Procedures\CommentsModify.sql" />
+    <Build Include="dbo\Stored Procedures\CommentsListAll.sql" />
+    <Build Include="dbo\Stored Procedures\CommentsInsert.sql" />
+    <Build Include="dbo\Stored Procedures\AttachmentsSingleById.sql" />
+    <Build Include="dbo\Stored Procedures\AttachmentsModify.sql" />
+    <Build Include="dbo\Stored Procedures\AttachmentsListAll.sql" />
+    <Build Include="dbo\Stored Procedures\AttachmentsListActive.sql" />
+    <Build Include="dbo\Stored Procedures\AttachmentsByPurchaseOrderId.sql" />
+    <Build Include="dbo\Stored Procedures\ApprovalStatusSingleById.sql" />
+    <Build Include="dbo\Stored Procedures\ApprovalStatusModify.sql" />
+    <Build Include="dbo\Stored Procedures\ApprovalStatusListAll.sql" />
+    <Build Include="dbo\Stored Procedures\ApprovalStatusListActive.sql" />
+    <Build Include="dbo\Stored Procedures\ApprovalsSingleById.sql" />
+    <Build Include="dbo\Stored Procedures\ApprovalsModify.sql" />
+    <Build Include="dbo\Stored Procedures\ApprovalsListByPurchaseOrders.sql" />
+    <Build Include="dbo\Stored Procedures\ApprovalsListAll.sql" />
+    <Build Include="dbo\Stored Procedures\ApprovalsByPurchaseOrderByCurrentApprover.sql" />
+    <Build Include="dbo\Stored Procedures\ApprovalsByCurrentApprover.sql" />
+    <Build Include="dbo\Stored Procedures\WorkFlowsViewSingleById.sql" />
+    <Build Include="dbo\Stored Procedures\WorkFlowsViewListAll.sql" />
+    <Build Include="dbo\Stored Procedures\WorkFlowsViewListActive.sql" />
+    <Build Include="dbo\Stored Procedures\WorkFlowsListByDepartmentId.sql" />
+    <Build Include="dbo\Stored Procedures\WorkFlowMembersViewSingleById.sql" />
+    <Build Include="dbo\Stored Procedures\WorkFlowMembersViewNextApprover.sql" />
+    <Build Include="dbo\Stored Procedures\WorkFlowMembersViewListByWorkFlowId.sql" />
+    <Build Include="dbo\Stored Procedures\WorkFlowMembersViewListByPurchaseOrderByAmount.sql" />
+    <Build Include="dbo\Stored Procedures\WorkFlowMembersViewListAll.sql" />
+    <Build Include="dbo\Stored Procedures\WorkFlowMembersViewByWorkFlowIdBySequence.sql" />
+    <Build Include="dbo\Stored Procedures\WorkFlowMembersLastSequenceByPurchaseOrderId.sql" />
+    <Build Include="dbo\Stored Procedures\WorkFlowMembersLastSequenceByPurchaseOrder.sql" />
+    <Build Include="dbo\Stored Procedures\VendorsViewSingleById.sql" />
+    <Build Include="dbo\Stored Procedures\VendorsViewListAll.sql" />
+    <Build Include="dbo\Stored Procedures\VendorsViewListActive.sql" />
+    <Build Include="dbo\Stored Procedures\VendorSelectionSingleById.sql" />
+    <Build Include="dbo\Stored Procedures\VendorSelectionModify.sql" />
+    <Build Include="dbo\Stored Procedures\VendorSelectionListAll.sql" />
+    <Build Include="dbo\Stored Procedures\VendorSelectionListActive.sql" />
+    <Build Include="dbo\Stored Procedures\VendorReasonSingleById.sql" />
+    <Build Include="dbo\Stored Procedures\VendorReasonModify.sql" />
+    <Build Include="dbo\Stored Procedures\VendorReasonListAll.sql" />
+    <Build Include="dbo\Stored Procedures\VendorReasonListActive.sql" />
+    <Build Include="dbo\Stored Procedures\StatusSingleById.sql" />
+    <Build Include="dbo\Stored Procedures\StatusModify.sql" />
+    <Build Include="dbo\Stored Procedures\StatusListAll.sql" />
+    <Build Include="dbo\Stored Procedures\StatusListActive.sql" />
+    <Build Include="dbo\Stored Procedures\RequestingDepartmentsSingleById.sql" />
+    <Build Include="dbo\Stored Procedures\RequestingDepartmentsSingleByDescription.sql" />
+    <Build Include="dbo\Stored Procedures\USP_GetUserByLoginId.sql" />
+    <Build Include="dbo\Stored Procedures\RequestingDepartmentsModify.sql" />
+    <Build Include="dbo\Stored Procedures\USP_GetUserAccessGroupByLoginId.sql" />
+    <Build Include="dbo\Stored Procedures\RequestingDepartmentsListAll.sql" />
+    <Build Include="dbo\Stored Procedures\USP_GetUserDetailsOnSearch.sql" />
+    <Build Include="dbo\Stored Procedures\RequestingDepartmentsListActive.sql" />
+    <Build Include="dbo\Stored Procedures\DepartmentsListAll.sql" />
+    <Build Include="dbo\Stored Procedures\Report_PurchaseOrderHeader.sql" />
+    <Build Include="dbo\Stored Procedures\Report_PurchaseOrderDetail.sql" />
+    <Build Include="dbo\Stored Procedures\usp_SaveDepartment.sql" />
+    <Build Include="dbo\Stored Procedures\Report_PurchaseOrderAttachments.sql" />
+    <Build Include="dbo\Stored Procedures\USP_GetAllGLCode.sql" />
+    <Build Include="dbo\Stored Procedures\Report_PurchaseOrderApprovals.sql" />
+    <Build Include="dbo\Stored Procedures\usp_SaveGeneralLedger.sql" />
+    <Build Include="dbo\Stored Procedures\Report_PurchaseOrder.sql" />
+    <Build Include="dbo\Stored Procedures\PurchaseOrdersPending.sql" />
+    <Build Include="dbo\Stored Procedures\PurchaseOrderSingleById.sql" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,100 @@
+﻿@page "/newpo"
+
+@inject NavigationManager NavigationManager
+<style>
+ 
+    .table-title {
+        background: #353b48;
+        color: #fff;
+        position: sticky;
+        top: 0;
+        width: 100%;
+        left: 0;
+        padding: 10px 30px;
+        border-radius: 0px 0px 0 0;
+    }
+    .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid rgba(0,0,0,.125);
+        border-radius: 0.25rem;
+        padding-top: 1px
+    }
+
+    .table-title .btn {
+        color: #fff;
+        float: right;
+        font-size: 13px;
+        border: none;
+        min-width: 50px;
+        border-radius: 2px;
+        border: none;
+        outline: none !important;
+        margin-left: 10px;
+    }
+    .bg-HarscoBule {
+        background-color: #195852 !important;
+    }
+
+    .text-white {
+        color: #fff !important;
+    }
+
+    .card.addvendor {
+        margin: 17px;
+    }
+
+    .button.btn.btn-dark.uploadbtn {
+        margin-top: -63px;
+    }
+</style>
+<POForm ></POForm>
+@code {
+   
+    private ValidationMessageStore? messageStore;
+
+    private void HandleValidationRequested(object? sender,
+       ValidationRequestedEventArgs args)
+    {
+        messageStore?.Clear();
+
+        // Custom validation logic
+        // if (!Model!.Options)
+        // {
+        //     messageStore?.Add(() => Model.Options, "Select at least one.");
+        // }
+    }
+    private void Submit()
+    {
+        // Logger.LogInformation("Submit called: Processing the form");
+    }
+    // public void OnAddressAdd(Person person)
+    // {
+    //     person.Addresses.Add(new Address { Street = "", City = "", State = "", ZipCode = "" });
+    // }
+    public void Cancel()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+    async Task CreatePerson()
+    {
+        // loading = true;
+        try
+        {
+            Console.WriteLine("tetesst");
+
+        }
+        catch (Exception ex)
+        {
+            // AlertService.Error(ex.Message);
+            // loading = false;
+            StateHasChanged();
+        }
+    }
+}
+

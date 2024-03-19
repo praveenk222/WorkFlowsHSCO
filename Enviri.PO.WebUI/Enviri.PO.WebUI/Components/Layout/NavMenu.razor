@@ -1,0 +1,97 @@
+﻿<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">Purchase Orders</a>
+    </div>
+</div>
+
+<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="newpo">
+                <span aria-hidden="true"></span> New Purchase Order
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <a class="nav-link" data-bs-toggle="collapse" href="#purchaseOrdersSubmenu" aria-expanded="false" aria-controls="purchaseOrdersSubmenu">
+                <span aria-hidden="true"></span> Purchase Orders
+            </a>
+            <div class="collapse" id="purchaseOrdersSubmenu">
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="appo">
+                        <span aria-hidden="true"></span> Approve Purchase Orders
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="printpo">
+                        <span aria-hidden="true"></span> Print Purchase Orders
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="oldpo">
+                        <span aria-hidden="true"></span> Old Purchase Orders
+                    </NavLink>
+                </div>
+            </div>
+        </div>
+
+      
+        <div class="nav-item px-3">
+            <a class="nav-link" data-bs-toggle="collapse" href="#adminSubmenu" aria-expanded="false" aria-controls="adminSubmenu">
+                <span aria-hidden="true"></span>Admin
+            </a>
+            <div class="collapse" id="adminSubmenu">
+               
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="depoList">
+                        <span aria-hidden="true"></span> Departments
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="vendor">
+                        <span aria-hidden="true"></span> Vendors
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="glcode">
+                        <span aria-hidden="true"></span> GL Code
+                    </NavLink>
+                </div>
+            </div>
+        </div>
+        <div class="nav-item px-3">
+            <a class="nav-link" data-bs-toggle="collapse" href="#useradminSubmenu" aria-expanded="false" aria-controls="useradminSubmenu">
+                <span aria-hidden="true"></span>User Admin
+            </a>
+            <div class="collapse" id="useradminSubmenu">
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="workflow">
+                        <span aria-hidden="true"></span> Users
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="depoList">
+                        <span aria-hidden="true"></span> User Clone
+                    </NavLink>
+                </div>
+              
+            </div>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="logout">
+                <span aria-hidden="true"></span> Logout
+            </NavLink>
+        </div>
+    </nav>
+
+</div>
+

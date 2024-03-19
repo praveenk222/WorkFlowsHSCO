@@ -1,0 +1,188 @@
+﻿@page "/glcode"
+@rendermode InteractiveAuto
+@inject DialogService DialogService
+<style>
+    .rz-grid-table thead th {
+        background-color: #81817D;
+    }
+
+        .rz-grid-table thead th .rz-column-title {
+            color: #ffffff;
+        }
+</style>
+<div class="row">
+    @if (departments.Count > 0)
+    {
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="10px" class="mt-2 mb-4">
+            <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="add_circle_outline" Text="Add New GLcode" Click="@InsertRow" style="margin-left:auto" />
+
+        </RadzenStack>
+        <RadzenDataGrid @ref="ordersGrid" Data="@departments" TItem="TblDepartment" AllowAdding="true"
+                        AllowPaging="true" PageSize="5" RowCreate="@OnCreateRow" EditMode="DataGridEditMode.Single">
+            <Columns>
+                <RadzenDataGridColumn TItem="TblDepartment" Property="Id" Title=" ID" />
+                <RadzenDataGridColumn TItem="TblDepartment" Property="Name" Title=" Name">
+                    <EditTemplate Context="departments">
+                        <RadzenTextBox @bind-Value="departments.Name" Style="width:200px; display: block"
+                                       Name="Name" />
+                        <RadzenRequiredValidator Text="Name is required" Component="Name" Popup="true" />
+
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="TblDepartment" Property="IsDeleted" Title="Status" />
+                <RadzenDataGridColumn TItem="TblDepartment" Title="Action">
+                    <Template Context="departments">
+                        <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium"
+                                      Click="@(args => EditRow(departments))" @onclick:stopPropagation="true">
+                        </RadzenButton>
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1"
+                                      Click="@(args => DeleteRow(departments))" @onclick:stopPropagation="true">
+                        </RadzenButton>
+                    </Template>
+                    <EditTemplate Context="departments">
+                        <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@((args) => SaveRow(departments))">
+                        </RadzenButton>
+                        <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@((args) => CancelEdit(departments))">
+                        </RadzenButton>
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@ShowInlineDialog">
+                        </RadzenButton>
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+            </Columns>
+
+        </RadzenDataGrid>
+        <ConfirmDIalog @ref="DeleteConfirmation" ConfirmationChanged="ConfirmDelete_Click"
+                       ConfirmationMessage=@($"Are you sure you want to delete ")>
+        </ConfirmDIalog>
+    }
+    else
+    {
+        <div class="alert alert-info">Loading.... </div>
+    }
+
+</div>
+@code {
+    private List<TblDepartment> departments { get; set; } = new();
+    RadzenDataGrid<TblDepartment> ordersGrid;
+    DataGridEditMode editMode = DataGridEditMode.Single;
+    List<TblDepartment> ordersToInsert = new List<TblDepartment>();
+    List<TblDepartment> ordersToUpdate = new List<TblDepartment>();
+    TblDepartment dltdepartment = new TblDepartment();
+    ConfirmDIalog DeleteConfirmation;
+    void Reset()
+    {
+        ordersToInsert.Clear();
+        ordersToUpdate.Clear();
+    }
+    public async Task LoadDepartment()
+    {
+        departments = await DepartmentService.GetAllDepartmentsAsync();
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadDepartment();
+    }
+
+
+    async Task SaveRow(TblDepartment department)
+    {
+        await ordersGrid.UpdateRow(department);
+        department.IsDeleted = false;
+        department.Code = "test";
+        department.CreatedOn = DateTime.UtcNow;
+        department.ModifiedOn = DateTime.UtcNow;
+        department.CreatedBy = "teste";
+        department.ModifiedBy = "tetes";
+        var data = await DepartmentService.UpdateDepartmentAsync(department);
+    }
+
+    void OnCreateRow(TblDepartment order)
+    {
+        //save logic
+    }
+    async Task InsertRow()
+    {
+        if (editMode == DataGridEditMode.Single)
+        {
+            Reset();
+        }
+
+        var order = new TblDepartment();
+        ordersToInsert.Add(order);
+        await ordersGrid.InsertRow(order);
+    }
+
+    async Task EditRow(TblDepartment order)
+    {
+        if (editMode == DataGridEditMode.Single && ordersToInsert.Count() > 0)
+        {
+            Reset();
+        }
+
+        ordersToUpdate.Add(order);
+        await ordersGrid.EditRow(order);
+    }
+    public delegate string GetDepartmentName(object department);
+    public class UniqueEmailValidator : Radzen.Blazor.ValidatorBase
+    {
+        [Parameter]
+        public override string Text { get; set; } = "Email exists";
+
+        protected override bool Validate(IRadzenFormComponent component)
+        {
+            var email = component.GetValue();
+
+            return email != null && DepoName != null && !DepoName.Contains(email.ToString());
+        }
+
+        [Parameter]
+        public IEnumerable<string> DepoName { get; set; }
+    }
+
+    void CancelEdit(TblDepartment order)
+    {
+        Reset(order);
+
+        ordersGrid.CancelEditRow(order);
+
+
+    }
+    void Reset(TblDepartment order)
+    {
+        ordersToInsert.Remove(order);
+        ordersToUpdate.Remove(order);
+    }
+
+    async Task DeleteRow(TblDepartment order)
+    {
+        Reset(order);
+        DeleteConfirmation.Show();
+        dltdepartment = order;
+
+    }
+    protected async Task ConfirmDelete_Click(bool deleteConfirmed)
+    {
+        if (deleteConfirmed)
+        {
+            // DeleteConfirmation.Show();
+            if (departments.Contains(dltdepartment))
+            {
+                await DepartmentService.DeleteDepartmentAsync(dltdepartment.Id);
+
+
+                await ordersGrid.Reload();
+            }
+            else
+            {
+                // ordersGrid.CancelEditRow(order);
+                await ordersGrid.Reload();
+            }
+
+        }
+    }
+
+    async Task ShowInlineDialog()
+    {
+
+    }
+}

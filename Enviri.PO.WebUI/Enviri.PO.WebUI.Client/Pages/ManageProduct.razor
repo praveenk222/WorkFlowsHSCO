@@ -1,0 +1,58 @@
+﻿@* ﻿@page "/manage-product" *@
+@page "/manage-product/{Id:int}"
+@rendermode InteractiveAuto
+<div class="cotainer">
+    <div class="row">   
+        <div class="col-md-8">
+
+        <div class="card">
+            <div class="card-body">
+                <EditForm Model="ProductModel" OnInvalidSubmit="HandleSave" FormName="manageProduct">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    <div class="form-group">
+                        <label>Product Title</label>
+                        <InputText @bind-Value="ProductModel.Title" class="form-control"></InputText>
+                        <ValidationMessage For="()=>ProductModel.Title"></ValidationMessage>
+                    </div>
+                        <div class="form-group">
+                            <label>Product Title</label>
+                            <InputText @bind-Value="ProductModel.RequestedBy" class="form-control"></InputText>
+                            <ValidationMessage For="()=>ProductModel.RequestedBy"></ValidationMessage>
+                        </div>
+                </EditForm>
+
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+@code {
+    [SupplyParameterFromForm]
+    private PurchaseOrder ProductModel { get; set; } = new();
+
+    [Parameter] public int Id{ get; set; }
+    private PurchaseOrder ReturnData = new();
+    private async Task HandleSave()
+    {
+        var result = await PurchaseOrderService.AddProductAsync(ProductModel);
+        //await js.InvokeVoidAsync("alert",$"{result.Id}");
+        if(ProductModel.Id > 0)
+        {
+            ReturnData = await PurchaseOrderService.UpdateProductAsync(ProductModel);
+            ProductModel = new();
+        }
+        else
+        {
+            ReturnData = await PurchaseOrderService.AddProductAsync(ProductModel);
+            ProductModel = new();
+
+        }
+
+    }
+    protected override async Task OnParametersSetAsync()
+    {
+        ProductModel = await PurchaseOrderService.GetProductByIdAsync(Id);
+    }
+}

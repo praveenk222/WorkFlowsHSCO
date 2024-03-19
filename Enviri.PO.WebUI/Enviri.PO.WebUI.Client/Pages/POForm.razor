@@ -1,0 +1,144 @@
+﻿@* @inject Enviri.PO.WebUI.Client.Shared.PageHistoryState PageHistoryState *@
+@using Enviri.PO.WebUI
+@page "/formstest"
+
+@using System.ComponentModel.DataAnnotations;
+@using System.Text.RegularExpressions
+
+<h3>Pizza Order</h3>
+<EditForm Enhance EditContext="editContext" OnValidSubmit="@SubmitForm1" FormName="Form1">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2 p-1">
+                <label>First Name</label>
+            </div>
+            <div class="col-md-4 p-1">
+                <InputText @bind-Value="formModel!.Name" />
+                <ValidationMessage For="@(() => formModel!.Name)" />
+            </div>
+            <div class="col-md-4 p-1">
+                <InputText @bind-Value="formModel!.Number" />
+                <ValidationMessage For="@(() => formModel!.Number)" />
+            </div>
+        </div>
+    </div>
+  
+  
+    <div>
+      
+
+    </div>
+    <div>
+        <button type="submit">Update</button>
+    </div>
+</EditForm>
+@code {
+    private EditContext? editContext;
+    private ValidationMessageStore? messageStore;
+
+    [SupplyParameterFromForm]
+    public TblVendor? formModel { get; set; }
+
+    public class Option
+    {
+        public string? Value { get; set; }
+        public string? Display { get; set; }
+    }
+    public Option[] pizzasizes = new Option[] {
+        new Option { Value = "small", Display = "Small" },
+        new Option { Value = "medium", Display = "Medium" },
+        new Option { Value = "large", Display = "Large" }
+    };
+    public Option[] cookedoptions = new Option[]
+    {
+        new Option {Value="light", Display="Lightly Cooked"},
+        new Option {Value="normal", Display="Normal"},
+        new Option {Value="welldone", Display="Well Done"},
+    };
+
+    private async Task SubmitForm1()
+    {
+        // All validations passed,
+        // formModel will have valid data.
+        formModel.ModifiedBy = "praveen";
+
+        var data = VendormasterService.AddVendorAsync(formModel);
+        Console.WriteLine(formModel);
+
+
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        formModel ??= new();
+        editContext = new(formModel);
+        // editContext.OnValidationRequested += form1HandleValidationRequested;
+        messageStore = new(editContext);
+    }
+
+    
+
+
+    public class PizzaOrder
+    {
+        public string? Cooked { get; set; } = "normal";
+
+        public bool ExtraCheese { get; set; }
+        public bool Peppers { get; set; }
+        public bool Sausage { get; set; }
+
+        [Required]
+        public string? Size { get; set; } = null;
+
+        [Required]
+        [StringLength(50, ErrorMessage = "First Name too long (50 character limit).")]
+        public string? FirstName { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "Last Name too long (100 character limit).")]
+        public string? LastName { get; set; }
+
+        [Required]
+        [Email]
+        public string? Email { get; set; }
+
+        [Required]
+        public DateTime DeliveryTime { get; set; } = DateTime.Now;
+
+    }
+
+
+    public class EmailAttribute : ValidationAttribute
+    {
+        protected override ValidationResult? IsValid(object? value,
+            ValidationContext validationContext)
+        {
+
+            if (value is not null)
+            {
+                var pattern = @"(@)(.+)$";
+                if (Regex.IsMatch(value.ToString(), pattern))
+                {
+                    if (value!.ToString().Contains("test.com"))
+                    {
+                        return new ValidationResult("Not available to test.com users.", new[] { validationContext.MemberName }!);
+
+                    }
+                    else
+                    {
+                        return ValidationResult.Success;
+                    }
+                }
+                else
+                {
+                    return new ValidationResult("Invalid Email Format.", new[] { validationContext.MemberName }!);
+                }
+            }
+            else
+            {
+                return new ValidationResult("Email is required.", new[] { validationContext.MemberName }!);
+            }
+        }
+    }
+}

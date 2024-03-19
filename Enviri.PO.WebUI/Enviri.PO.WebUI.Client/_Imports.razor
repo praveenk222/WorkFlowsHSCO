@@ -1,0 +1,23 @@
+﻿@using System.Net.Http
+@using System.Net.Http.Json
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using static Microsoft.AspNetCore.Components.Web.RenderMode
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.JSInterop
+@using Enviri.PO.WebUI.Client
+@using Enviri.SharedLibrary.PORespositories;
+@using Enviri.PO.WebUI
+@using Radzen
+@using Radzen.Blazor
+@using Enviri.PO.WebUI.Client.Pages
+@using BlazorBootstrap;
+@using Enviri.SharedLibrary.Models
+
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@* @inject IJSRuntime js *@
+@inject IPORepository PurchaseOrderService
+@inject IDepartmentRepository DepartmentService
+@inject IVendorRepository VendormasterService

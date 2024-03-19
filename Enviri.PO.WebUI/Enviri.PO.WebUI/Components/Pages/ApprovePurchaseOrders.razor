@@ -1,0 +1,102 @@
+﻿@page "/appo"
+<style>
+    .hint-text {
+        float: left;
+        margin-top: 10px;
+        font-size: 13px;
+    }
+
+    .pagination {
+        float: right;
+        margin: 0 0 5px;
+    }
+
+        .pagination li a {
+            border: none;
+            font-size: 13px;
+            min-width: 30px;
+            min-height: 30px;
+            color: #999;
+            margin: 0 2px;
+            line-height: 30px;
+            border-radius: 2px !important;
+            text-align: center;
+            padding: 0 6px;
+        }
+
+    .table-wrapper {
+        background-color: #fff;
+        margin: 6px 0px 40px 0px;
+        width: 100%;
+        overflow: auto;
+        border-radius: 3px;
+        box-shadow: 0 1px 1px rgb(0 0 0 / 5%);
+    }
+
+    .bg-HarscoBule {
+        background-color: #195852 !important;
+    }
+</style>
+<PageTitle>Home</PageTitle>
+
+@* <p>The items listed below are purchase orders you have entered</p> *@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header bg-HarscoBule text-white"> Approve Purchase Orders </div>
+                <div class="card-body">
+                    <div class="table-wrapper">
+                        <table class="table table-striped table-hover">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Requested By</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Requsting Department</th>
+                                    <th scope="col">Vendor Name</th>
+                                    <th scope="col">Vendor Number</th>
+                                    <th scope="col">Vendor Phone</th>
+                                    <th scope="col">Vendor Fax</th>
+                                    <th scope="col">Delivery Date</th>
+                                    <th scope="col">Total Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row"><a href="#">Purchase order</a></th>
+                                    <td>Mark</td>
+                                    <td>active</td>
+                                    <td>N/A</td>
+                                    <td>N/A</td>
+                                    <td>N/A</td>
+                                    <td>N/A</td>
+                                    <td>N/A</td>
+                                    <td>N/A</td>
+                                    <td>N/A</td>
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <div class="clearfix">
+                            <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+                            <ul class="pagination">
+                                <li class="page-item disabled"><a href="#">Previous</a></li>
+                                <li class="page-item"><a href="#" class="page-link">1</a></li>
+                                <li class="page-item"><a href="#" class="page-link">2</a></li>
+                                <li class="page-item active"><a href="#" class="page-link">3</a></li>
+                                <li class="page-item"><a href="#" class="page-link">4</a></li>
+                                <li class="page-item"><a href="#" class="page-link">5</a></li>
+                                <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+
+}

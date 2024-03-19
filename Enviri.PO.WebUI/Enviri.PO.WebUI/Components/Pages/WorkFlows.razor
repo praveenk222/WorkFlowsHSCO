@@ -1,0 +1,69 @@
+﻿@page "/workflow"
+@using Enviri.PO.WebUI
+@using Enviri.PO.WebUI.Services
+@inject EmployeeService employeeservice
+<h3>Work flows</h3>
+
+@if (EmpObj is null)
+{
+    <p><em>Loading... !</em></p>
+}
+else
+{
+   <div class="container-fluid">
+       <div class="row">
+           <div class="col">
+               <div class="card">
+                   <div class="card-header bg-HarscoBlue text-white"> Work Flow List
+                       <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        @* <th>Emp Id</th> *@
+                                        <th>WorkFlow Name</th>
+                                        <th>Department</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var emp in EmpObj)
+                                    {
+                                        <tr>
+                                            @* <td>@emp.Id</td> *@
+
+                                            <td>@emp.WorkFlowName</td>
+                                            <td>@emp.DeaprtmentName</td>
+                                            <td>@emp.IsDeleted</td>
+                                         @*    <td>@emp.ApproverSequence</td>
+                                            <td>@emp.ApprovalAmount</td> *@
+                                            <td>
+                                                <a class="nav-link" href="EditEmployee/@emp.Id">
+                                                    <span class="oi oi-pencil" aria-hidden="true">Edit</span>
+                                                </a>
+                                                <a class="nav-link" href="Delete/@emp.Id">
+                                                    <span class="oi oi-trash" aria-hidden="true">Delete</span>
+                                                </a>
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                       </div>
+
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+
+    
+}
+@code {
+    List<TblWorkFlowNew> EmpObj;
+    protected override async Task OnInitializedAsync()
+    {
+        EmpObj = await Task.Run(() => employeeservice.GetAllWOrkflows());
+    }
+}
